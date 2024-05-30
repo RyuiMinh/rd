@@ -19,6 +19,7 @@ class CRDSetup:
         self.installCRD()
         self.installDesktopEnvironment()
         self.installGoogleChrome()
+        self.finish(user)
 
     @staticmethod
     def installCRD():
@@ -46,3 +47,55 @@ class CRDSetup:
         subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
         print("Google Chrome Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
+    @staticmethod
+    def finish(user):
+        if Autostart:
+            os.makedirs(f"/home/{user}/.config/autostart", exist_ok=True)
+            link = "www.youtube.com/@The_Disala"
+            colab_autostart = """[Desktop Entry]
+            print("Finalizing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+Type=Application
+Name=Colab
+Exec=sh -c "sensible-browser {}"
+Icon=
+Comment=Open a predefined notebook at session signin.
+X-GNOME-Autostart-enabled=true""".format(link)
+            with open(f"/home/{user}/.config/autostart/colab.desktop", "w") as f:
+                f.write(colab_autostart)
+            os.system(f"chmod +x /home/{user}/.config/autostart/colab.desktop")
+            os.system(f"chown {user}:{user} /home/{user}/.config")
+            
+        os.system(f"adduser {user} chrome-remote-desktop")
+        command = f"{CRD_SSH_Code} --pin={Pin}"
+        os.system(f"su - {user} -c '{command}'")
+        os.system("service chrome-remote-desktop start")
+        
+        print(" ..........................................................")
+        print(" .....Brought By The Disala................................")
+        print(" ..........................................................")
+        print(" ......#####...######...####....####...##.......####.......")
+        print(" ......##..##....##....##......##..##..##......##..##......")
+        print(" ......##..##....##.....####...######..##......######......")
+        print(" ......##..##....##........##..##..##..##......##..##......")
+        print(" ......#####...######...####...##..##..######..##..##......")
+        print(" ..........................................................")
+        print(" ......... Telegram Channel - https://t.me/TheDisala4U ....")
+        print(" ..........................................................")
+        print(" ..Youtube Channel - https://www.youtube.com/@The_Disala ..")
+        print(" ..........................................................")
+        print("Log in PIN : 123456") 
+        print("User Name : user") 
+        print("User Pass : root") 
+        while True:
+            pass
+
+try:
+    if CRD_SSH_Code == "":
+        print("Please enter authcode from the given link")
+    elif len(str(Pin)) < 6:
+        print("Enter a pin more or equal to 6 digits")
+    else:
+        CRDSetup(username)
+except NameError as e:
+    print("'username' variable not found, Create a user first")
