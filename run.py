@@ -10,7 +10,7 @@ os.system(f"adduser {username} sudo")
 os.system(f"echo '{username}:{password}' | sudo chpasswd")
 os.system("sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd")
 
-Pin = 123456
+Pin = 654321
 Autostart = True
 
 class CRDSetup:
@@ -51,7 +51,7 @@ class CRDSetup:
     def finish(user):
         if Autostart:
             os.makedirs(f"/home/{user}/.config/autostart", exist_ok=True)
-            link = "www.youtube.com/@The_Disala"
+            link = "www.youtube.com/"
             colab_autostart = """[Desktop Entry]
             print("Finalizing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
@@ -70,19 +70,6 @@ X-GNOME-Autostart-enabled=true""".format(link)
         command = f"{CRD_SSH_Code} --pin={Pin}"
         os.system(f"su - {user} -c '{command}'")
         os.system("service chrome-remote-desktop start")
-        
-        print(" ..........................................................")
-        print(" .....Brought By The Disala................................")
-        print(" ..........................................................")
-        print(" ......#####...######...####....####...##.......####.......")
-        print(" ......##..##....##....##......##..##..##......##..##......")
-        print(" ......##..##....##.....####...######..##......######......")
-        print(" ......##..##....##........##..##..##..##......##..##......")
-        print(" ......#####...######...####...##..##..######..##..##......")
-        print(" ..........................................................")
-        print(" ......... Telegram Channel - https://t.me/TheDisala4U ....")
-        print(" ..........................................................")
-        print(" ..Youtube Channel - https://www.youtube.com/@The_Disala ..")
         print(" ..........................................................")
         print("Log in PIN : 123456") 
         print("User Name : user") 
