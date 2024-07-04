@@ -39,10 +39,13 @@ class CRDSetup:
     @staticmethod
     def installDesktopEnvironment():
         os.system("export DEBIAN_FRONTEND=noninteractive")
-        os.system("sudo apt install --assume-yes tasksel")
-        os.system("sudo tasksel install ubuntu-desktop")
-        os.system("sudo bash -c 'echo \"exec /usr/bin/gnome-session\" > /etc/chrome-remote-desktop-session'")
-        os.system("sudo reboot")
+        os.system("apt install --assume-yes gnome-shell ubuntu-gnome-desktop gnome-terminal")
+        os.system("bash -c 'echo \"exec /etc/X11/Xsession /usr/bin/gnome-session\" > /etc/chrome-remote-desktop-session'")
+        os.system("apt remove --assume-yes xfce4-terminal")
+        os.system("apt install --assume-yes gnome-screensaver")
+        os.system("sudo service gdm3 stop")
+        os.system("sudo apt-get install dbus-x11 -y")
+        os.system("service dbus start")
         print("Installed GNOME Desktop Environment!")
 
     @staticmethod
