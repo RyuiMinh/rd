@@ -1,11 +1,13 @@
 import os
 import subprocess
 
+# Nhập mã CRD SSH và các thông tin người dùng
 CRD_SSH_Code = input("Google CRD SSH Code: ")
 username = "ns"
 password = "root"
 Pin = 654321
 
+# Tạo người dùng mới và thiết lập quyền sudo
 os.system(f"useradd -m {username}")
 os.system(f"adduser {username} sudo")
 os.system(f"echo '{username}:{password}' | sudo chpasswd")
@@ -14,35 +16,49 @@ os.system("sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd")
 
 class CRDSetup:
     def __init__(self, user):
-        os.system("apt update")
+        os.system("apt --assume-yes update")
+        os.system("apt --assume-yes upgrade")
         self.installCRD()
-        self.installDesktopEnvironment()
         self.installGoogleChrome()
+        self.installDesktopEnvironment()
         self.finish(user)
 
     @staticmethod
     def installCRD():
-        subprocess.run(['wget', 'https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb'])
-        subprocess.run(['dpkg', '--install', 'chrome-remote-desktop_current_amd64.deb'])
-        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
-        print("Chrome Remote Desktop Installed!")
+        deb_file = 'chrome-remote-desktop_current_amd64.deb'
+
+        if not os.path.exists(deb_file):
+            subprocess.run(
+                ['wget', 'https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb'])
+
+        if os.path.exists(deb_file):
+            subprocess.run(['dpkg', '--install', deb_file])
+            subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
+            print("Chrome Remote Desktop Installed!")
 
     @staticmethod
     def installDesktopEnvironment():
         os.system("export DEBIAN_FRONTEND=noninteractive")
-        os.system("apt install --assume-yes ubuntu-desktop")
-        os.system("bash -c 'echo \"exec /etc/X11/Xsession /usr/bin/gnome-session\" > /etc/chrome-remote-desktop-session'")
-        os.system("sudo service gdm3 stop")
-        os.system("sudo apt-get install dbus-x11 -y")
-        os.system("service dbus start")
+        os.system("sudo apt install --assume-yes tasksel")
+        os.system("sudo tasksel install ubuntu-desktop")
+        os.system("sudo bash -c 'echo \"exec /usr/bin/gnome-session\" > /etc/chrome-remote-desktop-session'")
+        os.system("sudo reboot")
         print("Installed GNOME Desktop Environment!")
 
     @staticmethod
     def installGoogleChrome():
-        subprocess.run(["wget", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"])
-        subprocess.run(["dpkg", "--install", "google-chrome-stable_current_amd64.deb"])
-        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
-        print("Google Chrome Installed!")
+        deb_file = 'google-chrome-stable_current_amd64.deb'
+
+        if not os.path.exists(deb_file):
+            subprocess.run(
+                ['wget', 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'])
+
+        if os.path.exists(deb_file):
+            subprocess.run(['dpkg', '--install', deb_file])
+            subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
+            print("Google Chrome Installed!")
+        else:
+            print(f"Download of {deb_file} failed. Installation aborted.")
 
     @staticmethod
     def finish(user):
@@ -53,7 +69,7 @@ class CRDSetup:
         print(" ..........................................................")
         print(f"Log in PIN : {Pin}")
         print(f"User Name : {user}")
-        print(f"User Pass : {password}")
+        print("User Pass : root")
         while True:
             pass
 
