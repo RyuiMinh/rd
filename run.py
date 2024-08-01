@@ -11,7 +11,7 @@ os.system(f"echo '{username}:{password}' | sudo chpasswd")
 os.system("sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd")
 
 Pin = 654321
-Autostart = True
+Autostart = False
 
 class CRDSetup:
     def __init__(self, user):
