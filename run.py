@@ -3,8 +3,8 @@ import subprocess
 import shutil
 
 CRD_SSH_Code = input("Google CRD SSH Code :")
-username = "ns"
-password = "root"
+username = "admin"
+password = "user"
 os.system(f"useradd -m {username}")
 os.system(f"adduser {username} sudo")
 os.system(f"echo '{username}:{password}' | sudo chpasswd")
@@ -55,7 +55,7 @@ class CRDSetup:
         print(" ..........................................................")
         print("Log in PIN : 123456") 
         print("User Name : user") 
-        print("User Pass : root") 
+        print("User Pass : user") 
         while True:
             pass
 
